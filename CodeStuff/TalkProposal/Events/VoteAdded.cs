@@ -1,3 +1,3 @@
 namespace CodeStuff.TalkProposal.Events;
 
-public record VoteAdded(string User, DateTime TimeStamp);
+public record VoteAdded(Guid ProposalId, string User, DateTime TimeStamp);

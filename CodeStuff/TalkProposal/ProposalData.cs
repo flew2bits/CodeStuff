@@ -1,7 +1,5 @@
 using CodeStuff.TalkProposal.Views;
 using Marten;
-using Marten.Events;
-using Marten.Linq;
 
 namespace CodeStuff.TalkProposal;
 
@@ -26,7 +24,7 @@ public class ProposalData
 
     public async Task<bool> Save(Guid id, Proposal _, IEnumerable<object> events)
     {
-        await using var session = _store.OpenSession();
+        await using var session = _store.LightweightSession();
         session.Events.Append(id, events);
         await session.SaveChangesAsync();
         return true;
@@ -34,13 +32,13 @@ public class ProposalData
 
     public async Task<IEnumerable<ActiveProposal>> GetActiveProposals()
     {
-        await using var session = _store.OpenSession();
+        await using var session = _store.QuerySession();
         return await session.Query<ActiveProposal>().ToListAsync();
     }
 
     public async Task<ProposalDetail> GetDetail(Guid id)
     {
-        await using var session = _store.OpenSession();
+        await using var session = _store.QuerySession();
         return await session.Query<ProposalDetail>().SingleAsync(p => p.Id == id);
     }
 }

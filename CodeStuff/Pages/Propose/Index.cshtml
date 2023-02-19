@@ -1,11 +1,15 @@
 @page
+@using Microsoft.AspNetCore.Routing;
+@inject LinkGenerator LinkGenerator
 @model CodeStuff.Pages.Propose.Index
 
 @{
     ViewData["Title"] = "View Talk Proposals";
 }
 
-<h2>CodeStuff Talk Proposals</h2>
+<!-- @LinkGenerator.GetPathByName("VoteProposal", values: new { proposalId = Guid.Empty }) -->
+
+<h2>TechTalk Proposals</h2>
 
 @if (TempData["Errors"] is string)
 {
@@ -48,8 +52,8 @@
     {
         <li data-id="@proposal.Id" data-vote-count="@proposal.Voters.Length">
             @proposal.Title by @proposal.Presenter
-            (<span class="proposalVotes">@proposal.Voters.Length</span>)
-            <i role="button" class="fa-regular fa-thumbs-up vote @(proposal.Voters.Contains(User.Identity!.Name) ? "text-success" : "")"></i>
+            @* (<span class="proposalVotes">@proposal.Voters.Length</span>) *@
+            <i data-vote-link="@Request.PathBase@(LinkGenerator.GetPathByName("VoteProposal", values: new {id = proposal.Id}))" role="button" class="fa-regular fa-thumbs-up vote @(proposal.Voters.Contains(User.Identity!.Name) ? "text-success" : "")"></i>
             <a asp-page="/Propose/Details" asp-route-proposalid="@proposal.Id">
                 <i role="button" class="fa-regular fa-info-circle"></i>
             </a>
@@ -66,14 +70,13 @@
         $('.vote').on('click', (evt) => {
             let $target = $(evt.target);
             let $li = $target.closest('li');
-            let id = $li.data('id');
             $.ajax({
-                url: `/CodeStuff/api/Propose/Vote/${id}`,
+                url: $target.data('voteLink'),
                 method: "post",
             })
-            .done(_ => { 
-                $target.addClass('text-success');
-                $li.find('.proposalVotes').text(1 + $li.data('voteCount'));
+            .done(_ => {
+                $target.toggleClass('text-success');
+                //$li.find('.proposalVotes').text(1 + $li.data('voteCount'));
             })
             .fail((_, status) => console.log(status));
         })

@@ -12,9 +12,9 @@ public static class ProposalDecider
         command switch
         {
             SubmitTalkProposal p => Events(new TalkProposalSubmitted(state.Id, p.Title, p.Brief, p.User, p.ReadyDate)),
-            VoteForTalk vt => state.Votes.Any(v => v.User == vt.UserName)
-                ? NoEvents
-                : Events(new VoteAdded(vt.UserName, DateTime.UtcNow)),
+            ToggleVoteForProposal toggle => state.Votes.Any(v => v.User == toggle.UserName)
+                ? Events(new VoteRemoved(state.Id, toggle.UserName, DateTime.UtcNow))
+                : Events(new VoteAdded(state.Id, toggle.UserName, DateTime.UtcNow)),
             AddCommentToProposal c => Events(new CommentAddedToProposal(state.Id, Guid.NewGuid(), c.User, c.Text,
                 DateTime.UtcNow)),
             ReplyToProposalComment r => state.Comments.Any(c => c.CommentId == r.InReplyTo)
@@ -32,6 +32,10 @@ public static class ProposalDecider
             VoteAdded vt => state with
             {
                 Votes = state.Votes.Append(new ProposalVote(vt.User, vt.TimeStamp)).ToArray()
+            },
+            VoteRemoved uvt => state with
+            {
+                Votes = state.Votes.Where(v => v.User != uvt.UserName).ToArray()
             },
             CommentAddedToProposal c => state with
             {
