@@ -1,3 +1,15 @@
+using CodeStuff.TalkProposal.Events;
+using Marten.Events.Aggregation;
+
 namespace CodeStuff.TalkProposal.Views;
 
-public record ActiveProposal(Guid ProposalId, string Title, string Presenter, string[] Voters);
+public record ActiveProposal(Guid Id, string Title, string Presenter, string[] Voters);
+
+public class ActiveProposalProjection : SingleStreamAggregation<ActiveProposal>
+{
+    public ActiveProposal Apply(VoteAdded evt, ActiveProposal activeProposal) =>
+        activeProposal with { Voters = activeProposal.Voters.Append(evt.User).ToArray() };
+    
+    public ActiveProposal Create(TalkProposalSubmitted evt) =>
+        new ActiveProposal(evt.ProposalId, evt.Title, evt.User, Array.Empty<string>());
+}

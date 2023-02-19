@@ -32,7 +32,7 @@
 <div class="mt-2">
     <h4>Comments</h4>
     <div class="ms-n4 mb-3">
-        <partial name="_CommentLayer" for="Detail!.Comments"/>
+        <partial name="_CommentLayer" model="@((Model.Detail.Id, Model.Detail!.Comments.ToLookup(c => c.InReplyTo)))"/>
     </div>
     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button>
 </div>

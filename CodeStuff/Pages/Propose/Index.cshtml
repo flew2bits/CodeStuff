@@ -46,11 +46,11 @@
 <ul>
     @foreach (var proposal in Model.ActiveProposals)
     {
-        <li data-id="@proposal.ProposalId" data-vote-count="@proposal.Voters.Length">
+        <li data-id="@proposal.Id" data-vote-count="@proposal.Voters.Length">
             @proposal.Title by @proposal.Presenter
             (<span class="proposalVotes">@proposal.Voters.Length</span>)
             <i role="button" class="fa-regular fa-thumbs-up vote @(proposal.Voters.Contains(User.Identity!.Name) ? "text-success" : "")"></i>
-            <a asp-page="/Propose/Details" asp-route-proposalid="@proposal.ProposalId">
+            <a asp-page="/Propose/Details" asp-route-proposalid="@proposal.Id">
                 <i role="button" class="fa-regular fa-info-circle"></i>
             </a>
         </li>

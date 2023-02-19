@@ -1,13 +1,20 @@
-@model CodeStuff.TalkProposal.Views.CommentLayer
+@model ValueTuple<Guid, ILookup<Guid, CodeStuff.TalkProposal.Views.Comment>>
 
-<div>
-@foreach (var comment in  Model.Comments)
+@{
+    var comments = Model.Item2[Model.Item1];
+}
+
+@if (comments.Any())
 {
-    <div class="ms-4 border-start ps-2">
-        <div class="small text-muted">@comment.User: @comment.TimeStamp.ToShortDateString() @comment.TimeStamp.ToShortTimeString() 
-            <i data-comment-id="@comment.CommentId" data-bs-toggle="modal" data-bs-target="#addCommentModal" class="fa-regular fa-reply" role="button"></i> </div>
-        <div class="mb-2">@comment.Text</div>
-        <partial name="_CommentLayer" for="@comment.SubCommentLayer"/>
+    <div>
+        @foreach (var comment in comments)
+        {
+            <div class="ms-4 border-start ps-2">
+                <div class="small text-muted">@comment.User: @comment.TimeStamp.ToShortDateString() @comment.TimeStamp.ToShortTimeString()
+                    <i data-comment-id="@comment.CommentId" data-bs-toggle="modal" data-bs-target="#addCommentModal" class="fa-regular fa-reply" role="button"></i> </div>
+                <div class="mb-2">@comment.Text</div>
+                <partial name="_CommentLayer" model="@((comment.CommentId, Model.Item2))"/>
+            </div>
+        }
     </div>
 }
-</div>
