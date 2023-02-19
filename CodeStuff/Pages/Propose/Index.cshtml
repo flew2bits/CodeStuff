@@ -1,0 +1,82 @@
+@page
+@model CodeStuff.Pages.Propose.Index
+
+@{
+    ViewData["Title"] = "View Talk Proposals";
+}
+
+<h2>CodeStuff Talk Proposals</h2>
+
+@if (TempData["Errors"] is string)
+{
+    <div class="alert alert-danger">@TempData["Errors"]</div>
+}
+
+<form method="post" asp-page-handler="ProposeTalk">
+    <div class="modal fade" id="proposeTalkModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Propose a Talk</h3>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="TalkProposal.Title">Title of the talk</label>
+                        <input class="form-control" type="text" asp-for="TalkProposal.Title"/>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="TalkProposal.Brief">Provide a brief description of the talk</label>
+                        <textarea class="form-control" asp-for="TalkProposal.Brief"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="TalkProposal.ReadyDate">Provide the earliest date when you would be ready to present</label>
+                        <input type="date" class="form-control" asp-for="TalkProposal.ReadyDate"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<ul>
+    @foreach (var proposal in Model.ActiveProposals)
+    {
+        <li data-id="@proposal.ProposalId" data-vote-count="@proposal.Voters.Length">
+            @proposal.Title by @proposal.Presenter
+            (<span class="proposalVotes">@proposal.Voters.Length</span>)
+            <i role="button" class="fa-regular fa-thumbs-up vote @(proposal.Voters.Contains(User.Identity!.Name) ? "text-success" : "")"></i>
+            <a asp-page="/Propose/Details" asp-route-proposalid="@proposal.ProposalId">
+                <i role="button" class="fa-regular fa-info-circle"></i>
+            </a>
+        </li>
+    }
+</ul>
+
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#proposeTalkModal">Propose a Talk</button>
+
+@section scripts
+{
+    <script>
+    $(() => {
+        $('.vote').on('click', (evt) => {
+            let $target = $(evt.target);
+            let $li = $target.closest('li');
+            let id = $li.data('id');
+            $.ajax({
+                url: `/CodeStuff/api/Propose/Vote/${id}`,
+                method: "post",
+            })
+            .done(_ => { 
+                $target.addClass('text-success');
+                $li.find('.proposalVotes').text(1 + $li.data('voteCount'));
+            })
+            .fail((_, status) => console.log(status));
+        })
+    });
+    </script>
+}

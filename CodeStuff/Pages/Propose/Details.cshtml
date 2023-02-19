@@ -1,0 +1,52 @@
+@page "{proposalId:guid}"
+@model CodeStuff.Pages.Propose.Details
+
+@{
+}
+
+<form method="post" asp-page-handler="AddComment">
+    <div class="modal fade" id="addCommentModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add a comment</h3>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" name="text" id="addCommentText"></textarea>
+                    <input type="hidden" name="inReplyTo" id="addCommentInReplyTo"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<h2>Details for @Model.Detail!.Title</h2>
+<div>@Model.Detail.Brief</div>
+<div>Presented by @Model.Detail.Presenter</div>
+<div>Not before @Model.Detail.ReadyDate.ToShortDateString()</div>
+<div class="mt-2">
+    <h4>Comments</h4>
+    <div class="ms-n4 mb-3">
+        <partial name="_CommentLayer" for="Detail!.Comments"/>
+    </div>
+    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button>
+</div>
+
+@section scripts
+{
+    <script>
+    $(() => {
+        $("#addCommentModal").on("show.bs.modal", evt => {
+            let $related = $(evt.relatedTarget);
+            let inReplyTo = $related.data('commentId');
+            $('#addCommentText').val('');
+            $('#addCommentInReplyTo').val(inReplyTo);
+        })
+    });
+    </script>
+}

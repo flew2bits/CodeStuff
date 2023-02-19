@@ -11,11 +11,43 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+      <Content Update="wwwroot\bootstrap\css\bootstrap.css">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\bootstrap\css\bootstrap.css.map">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\bootstrap\css\bootstrap.min.css">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\bootstrap\js\bootstrap.bundle.js">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\bootstrap\js\bootstrap.bundle.js.map">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\bootstrap\js\bootstrap.bundle.min.js">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Talks\Commands" />
       <Folder Include="Talks\Events" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="TalkProposal\Pages\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="bootstrap.sass" Version="5.2.3" />
+      <PackageReference Include="FluentValidation" Version="11.5.0" />
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.3" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3" />
+      <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.27.0" />
     </ItemGroup>
 
 </Project>
