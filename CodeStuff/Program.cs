@@ -55,7 +55,3 @@ app.MapPost("/api/Propose/Vote/{id:guid}",
     }).WithName("VoteProposal");
 
 app.Run();
-
-public delegate Task<IEnumerable<TView>> GetAll<TView>();
-
-public delegate Task<TView?> Find<in TIdentity, TView>(TIdentity id);
