@@ -8,6 +8,7 @@ public record ProposalDetail(Guid Id, string Title, string Brief, string Present
 
 public record Comment(Guid CommentId, string User, string Text, DateTime TimeStamp, Guid InReplyTo);
 
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class ProposalDetailProjection : SingleStreamAggregation<ProposalDetail>
 {
     public ProposalDetail Create(TalkProposalSubmitted evt) =>

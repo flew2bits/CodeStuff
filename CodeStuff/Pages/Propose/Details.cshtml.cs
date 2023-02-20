@@ -15,16 +15,10 @@ public class Details : PageModel
 
     public ProposalDetail? Detail { get; set; }
 
-    public async Task<IActionResult> OnGet([FromServices] Query<Guid, ProposalDetail> getProposalDetail)
+    public async Task<IActionResult> OnGet([FromServices] Find<Guid, ProposalDetail?> findProposalDetail)
     {
-        try
-        {
-            Detail = await getProposalDetail(ProposalId);
-        }
-        catch
-        {
-            return NotFound();
-        }
+        Detail = await findProposalDetail(ProposalId);
+        if (Detail is null) return NotFound();
 
         return Page();
     }
@@ -35,6 +29,6 @@ public class Details : PageModel
         await commandHandler.HandleCommand(ProposalId, inReplyTo.HasValue
             ? new ReplyToProposalComment(User.FindFirstValue(ClaimTypes.Upn)!, text, inReplyTo.Value)
             : new AddCommentToProposal(User.FindFirstValue(ClaimTypes.Upn)!, text));
-        return RedirectToPage(new {ProposalId});
+        return RedirectToPage(new { ProposalId });
     }
 }

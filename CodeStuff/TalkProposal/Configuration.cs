@@ -9,8 +9,8 @@ public static class Configuration
     public static IServiceCollection AddProposals(this IServiceCollection services) =>
         services
             .AddScoped<ProposalCommandHandler>()
-            .AddTransient<QueryAll<ActiveProposal>>(svc => svc.GetRequiredService<ProposalData>().GetActiveProposals)
-            .AddTransient<Query<Guid, ProposalDetail>>(svc => svc.GetRequiredService<ProposalData>().GetDetail)
+            .AddTransient<GetAll<ActiveProposal>>(svc => svc.GetRequiredService<ProposalData>().GetActiveProposals)
+            .AddTransient<Find<Guid, ProposalDetail>>(svc => svc.GetRequiredService<ProposalData>().GetDetail)
             .AddSingleton(ProposalDecider.Decider)
             .AddSingleton<Evolver<Guid, Proposal>>(ProposalDecider.Decider)
             .AddScoped<ProposalData>()

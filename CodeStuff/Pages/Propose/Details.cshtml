@@ -25,7 +25,10 @@
     </div>
 </form>
 
-<h2>Details for @Model.Detail!.Title</h2>
+<div class="d-flex">
+    <h2>Details for @Model.Detail!.Title</h2>
+    <a class="ms-auto h2" asp-page="./Index"><i class="fa-regular fa-arrow-turn-down-left" title="Return to Proposals"></i></a>
+</div>
 <div>@Model.Detail.Brief</div>
 <div>Presented by @Model.Detail.Presenter</div>
 <div>Not before @Model.Detail.ReadyDate.ToShortDateString()</div>

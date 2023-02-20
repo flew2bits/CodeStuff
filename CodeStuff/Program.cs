@@ -1,3 +1,4 @@
+global using JetBrains.Annotations;
 using CodeStuff.TalkProposal;
 using CodeStuff.TalkProposal.Commands;
 using CodeStuff.TalkProposal.Events;
@@ -22,8 +23,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddMarten(config =>
 {
-    config.Connection(
-        "User ID=postgres;Host=localhost;Port=5432;Database=postgres");
+    config.Connection(builder.Configuration.GetConnectionString("Marten") ?? throw new InvalidOperationException());
     config.UseDefaultSerialization(serializerType: SerializerType.SystemTextJson);
     config.AutoCreateSchemaObjects = AutoCreate.All;
 });
@@ -56,6 +56,6 @@ app.MapPost("/api/Propose/Vote/{id:guid}",
 
 app.Run();
 
-public delegate Task<IEnumerable<TView>> QueryAll<TView>();
+public delegate Task<IEnumerable<TView>> GetAll<TView>();
 
-public delegate Task<TView> Query<in TIdentity, TView>(TIdentity id);
+public delegate Task<TView?> Find<in TIdentity, TView>(TIdentity id);

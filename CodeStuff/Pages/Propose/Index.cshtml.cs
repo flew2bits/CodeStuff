@@ -18,7 +18,7 @@ public class Index : PageModel
     [BindProperty]
     public ProposeTalkRequest TalkProposal { get; set; } = new(null, null, null);
     
-    public async Task OnGet([FromServices] QueryAll<ActiveProposal> getActiveProposals)
+    public async Task OnGet([FromServices] GetAll<ActiveProposal> getActiveProposals)
     {
         ActiveProposals = (await getActiveProposals()).ToArray();
     }
