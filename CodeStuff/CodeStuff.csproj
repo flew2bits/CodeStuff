@@ -19,8 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Talks\Commands" />
-      <Folder Include="Talks\Events" />
+      <Folder Include="Presentation\Commands" />
+      <Folder Include="Presentation\Events" />
     </ItemGroup>
 
     <ItemGroup>
