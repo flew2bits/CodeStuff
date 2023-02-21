@@ -10,8 +10,9 @@
         @foreach (var comment in comments)
         {
             <div class="ms-4 border-start ps-2">
-                <div class="small text-muted">@comment.User: @comment.TimeStamp.ToLocalTime().ToShortDateString() @comment.TimeStamp.ToLocalTime().ToShortTimeString()
-                    <i data-comment-id="@comment.CommentId" data-bs-toggle="modal" data-bs-target="#addCommentModal" class="fa-regular fa-reply" role="button"></i> </div>
+                <div class="small text-muted">Posted by @comment.User at @comment.TimeStamp.ToLocalTime().ToShortDateString() @comment.TimeStamp.ToLocalTime().ToShortTimeString()
+                    <i data-comment-id="@comment.CommentId" data-bs-toggle="modal" data-bs-target="#addCommentModal" 
+                       class="fa-regular fa-reply text-dark" role="button" title="Reply to this comment"></i> </div>
                 <div class="mb-2">@comment.Text</div>
                 <partial name="_CommentLayer" model="@((comment.CommentId, Model.Item2))"/>
             </div>

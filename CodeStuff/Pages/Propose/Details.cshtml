@@ -29,15 +29,23 @@
     <h2>Details for @Model.Detail!.Title</h2>
     <a class="ms-auto h2" asp-page="./Index"><i class="fa-regular fa-arrow-turn-down-left" title="Return to Proposals"></i></a>
 </div>
-<div>@Model.Detail.Brief</div>
-<div>Presented by @Model.Detail.Presenter</div>
-<div>Not before @Model.Detail.ReadyDate.ToShortDateString()</div>
+<div class="mb-2">@Model.Detail.Brief</div>
+<div class="mb-2">Presented by @Model.Detail.Presenter</div>
+<div class="mb-2">Not before @Model.Detail.ReadyDate.ToShortDateString()</div>
 <div class="mt-2">
     <h4>Comments</h4>
-    <div class="ms-n4 mb-3">
-        <partial name="_CommentLayer" model="@((Model.Detail.ProposalId, Model.Detail!.Comments.ToLookup(c => c.InReplyTo)))"/>
-    </div>
-    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button>
+    @if (Model.Detail!.Comments.Any())
+    {
+        <div class="ms-n4 mb-3">
+            <partial name="_CommentLayer" model="@((Model.Detail.ProposalId, Model.Detail!.Comments.ToLookup(c => c.InReplyTo)))"/>
+        </div>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCommentModal">Start a Thread</button>
+    }
+    else
+    {
+        <div>There are no comments on this proposal yet. 
+            <a href="#" data-bs-toggle="modal" data-bs-target="#addCommentModal">Start the conversation</a> by adding the first comment.</div>
+    }
 </div>
 
 @section scripts
