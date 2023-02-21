@@ -15,7 +15,7 @@ public static class ProposalDecider
             ToggleVoteForProposal toggle => state.Votes.Any(v => v.User == toggle.UserName)
                 ? Events(new VoteRemoved(state.Id, toggle.UserName, DateTime.UtcNow))
                 : Events(new VoteAdded(state.Id, toggle.UserName, DateTime.UtcNow)),
-            AddCommentToProposal c => Events(new CommentAddedToProposal(state.Id, Guid.NewGuid(), c.User, c.Text,
+            StartCommentThread c => Events(new CommentThreadStarted(state.Id, Guid.NewGuid(), c.User, c.Text,
                 DateTime.UtcNow)),
             ReplyToProposalComment r => state.Comments.Any(c => c.CommentId == r.InReplyTo)
                 ? Events(new ReplyAddedToProposalComment(state.Id, Guid.NewGuid(), r.User, r.Text, DateTime.UtcNow,
@@ -37,7 +37,7 @@ public static class ProposalDecider
             {
                 Votes = state.Votes.Where(v => v.User != uvt.UserName).ToArray()
             },
-            CommentAddedToProposal c => state with
+            CommentThreadStarted c => state with
             {
                 Comments = state.Comments.Append(new ProposalComment(c.CommentId, c.User, c.Text, c.TimeStamp, state.Id)).ToArray()
             },

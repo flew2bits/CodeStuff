@@ -28,7 +28,7 @@ public class Details : PageModel
     {
         await commandHandler.HandleCommand(ProposalId, inReplyTo.HasValue
             ? new ReplyToProposalComment(User.FindFirstValue(ClaimTypes.Upn)!, text, inReplyTo.Value)
-            : new AddCommentToProposal(User.FindFirstValue(ClaimTypes.Upn)!, text));
+            : new StartCommentThread(User.FindFirstValue(ClaimTypes.Upn)!, text));
         return RedirectToPage(new { ProposalId });
     }
 }

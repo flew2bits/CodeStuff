@@ -8,10 +8,18 @@ using Marten.Services.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 using Weasel.Core;
+using static Microsoft.AspNetCore.Http.Results;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// builder.Services.Configure<ForwardedHeadersOptions>(opts =>
+// {
+//     opts.ForwardedHeaders = ForwardedHeaders.All;
+//     opts.KnownNetworks.Clear();
+//     opts.KnownProxies.Clear();
+// });
 builder.Services.AddAuthentication(opt =>
     {
         opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -30,8 +38,11 @@ builder.Services.AddMarten(config =>
 builder.Services.AddProposals();
 
 var app = builder.Build();
-app.UsePathBase("/CodeStuff");
 app.UseStaticFiles();
+var headerOptions = new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.All };
+headerOptions.KnownNetworks.Clear();
+headerOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(headerOptions);
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
@@ -44,14 +55,14 @@ app.MapPost("/api/Propose/Vote/{id:guid}",
         try
         {
             var (_, events) = await commandHandler.HandleCommand(id, new ToggleVoteForProposal(ctx.User.Identity!.Name!));
-            if (!events.Any(e => e is VoteAdded or VoteRemoved)) return Results.BadRequest("User can not change vote");
+            if (!events.Any(e => e is VoteAdded or VoteRemoved)) return BadRequest("User can not change vote");
         }
         catch
         {
-            return Results.NotFound();
+            return NotFound();
         }
 
-        return Results.Accepted();
+        return Accepted();
     }).WithName("VoteProposal");
 
 app.Run();

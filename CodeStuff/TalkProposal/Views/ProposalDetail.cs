@@ -14,7 +14,7 @@ public class ProposalDetailProjection : SingleStreamAggregation<ProposalDetail>
     public ProposalDetail Create(TalkProposalSubmitted evt) =>
         new(evt.ProposalId, evt.Title, evt.Brief, evt.User, evt.ReadyDate, Array.Empty<Comment>());
 
-    public ProposalDetail Apply(CommentAddedToProposal comment, ProposalDetail proposalDetail) =>
+    public ProposalDetail Apply(CommentThreadStarted comment, ProposalDetail proposalDetail) =>
         proposalDetail with
         {
             Comments = proposalDetail.Comments.Append(new Comment(comment.CommentId, comment.User, comment.Text,
