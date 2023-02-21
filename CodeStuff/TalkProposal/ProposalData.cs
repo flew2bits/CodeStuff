@@ -39,6 +39,6 @@ public class ProposalData
     public async Task<ProposalDetail?> GetDetail(Guid id)
     {
         await using var session = _store.QuerySession();
-        return await session.Query<ProposalDetail>().SingleOrDefaultAsync(p => p.Id == id);
+        return await session.Query<ProposalDetail>().SingleOrDefaultAsync(p => p.ProposalId == id);
     }
 }

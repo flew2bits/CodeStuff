@@ -3,7 +3,7 @@ using Marten.Events.Aggregation;
 
 namespace CodeStuff.TalkProposal.Views;
 
-public record ActiveProposal(Guid Id, string Title, string Presenter, string[] Voters);
+public record ActiveProposal(Guid ProposalId, string Title, string Presenter, string[] Voters);
 
 [UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class ActiveProposalProjection : SingleStreamAggregation<ActiveProposal>

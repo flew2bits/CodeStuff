@@ -20,5 +20,8 @@ public static class Configuration
             {
                 config.Projections.Add<ActiveProposalProjection>(ProjectionLifecycle.Inline);
                 config.Projections.Add<ProposalDetailProjection>(ProjectionLifecycle.Inline);
+
+                config.Schema.For<ActiveProposal>().Identity(p => p.ProposalId);
+                config.Schema.For<ProposalDetail>().Identity(p => p.ProposalId);
             });
 }

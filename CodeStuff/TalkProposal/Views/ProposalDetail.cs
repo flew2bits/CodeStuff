@@ -3,7 +3,7 @@ using Marten.Events.Aggregation;
 
 namespace CodeStuff.TalkProposal.Views;
 
-public record ProposalDetail(Guid Id, string Title, string Brief, string Presenter, DateOnly ReadyDate,
+public record ProposalDetail(Guid ProposalId, string Title, string Brief, string Presenter, DateOnly ReadyDate,
     Comment[] Comments);
 
 public record Comment(Guid CommentId, string User, string Text, DateTime TimeStamp, Guid InReplyTo);
@@ -18,7 +18,7 @@ public class ProposalDetailProjection : SingleStreamAggregation<ProposalDetail>
         proposalDetail with
         {
             Comments = proposalDetail.Comments.Append(new Comment(comment.CommentId, comment.User, comment.Text,
-                comment.TimeStamp, proposalDetail.Id)).ToArray()
+                comment.TimeStamp, proposalDetail.ProposalId)).ToArray()
         };
 
     public ProposalDetail Apply(ReplyAddedToProposalComment reply, ProposalDetail proposalDetail) =>
