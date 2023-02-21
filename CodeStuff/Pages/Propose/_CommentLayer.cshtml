@@ -1,3 +1,4 @@
+@using Humanizer
 @model ValueTuple<Guid, ILookup<Guid, CodeStuff.TalkProposal.Views.Comment>>
 
 @{
@@ -10,7 +11,7 @@
         @foreach (var comment in comments)
         {
             <div class="ms-4 border-start ps-2">
-                <div class="small text-muted">Posted by @comment.User at @comment.TimeStamp.ToLocalTime().ToShortDateString() @comment.TimeStamp.ToLocalTime().ToShortTimeString()
+                <div class="small text-muted">Posted @comment.TimeStamp.Humanize() by @comment.User
                     <i data-comment-id="@comment.CommentId" data-bs-toggle="modal" data-bs-target="#addCommentModal" 
                        class="fa-regular fa-reply text-dark" role="button" title="Reply to this comment"></i> </div>
                 <div class="mb-2">@comment.Text</div>
