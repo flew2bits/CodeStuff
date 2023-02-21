@@ -54,15 +54,16 @@ app.MapPost("/api/Propose/Vote/{id:guid}",
     {
         try
         {
-            var (_, events) = await commandHandler.HandleCommand(id, new ToggleVoteForProposal(ctx.User.Identity!.Name!));
-            if (!events.Any(e => e is VoteAdded or VoteRemoved)) return BadRequest("User can not change vote");
+            var (state, events) =
+                await commandHandler.HandleCommand(id, new ToggleVoteForProposal(ctx.User.Identity!.Name!));
+            return events.Any(e => e is VoteAdded or VoteRemoved)
+                ? Json(new { Votes = state.Votes.Length }, statusCode: StatusCodes.Status202Accepted)
+                : BadRequest("User can not change vote");
         }
         catch
         {
             return NotFound();
         }
-
-        return Accepted();
     }).WithName("VoteProposal");
 
 app.Run();

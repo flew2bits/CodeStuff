@@ -52,7 +52,7 @@
     {
         <li data-id="@proposal.ProposalId" data-vote-count="@proposal.Voters.Length">
             @proposal.Title by @proposal.Presenter
-            @* (<span class="proposalVotes">@proposal.Voters.Length</span>) *@
+            (<span class="proposalVotes">@proposal.Voters.Length</span>)
             <i data-vote-link="@Request.PathBase@(LinkGenerator.GetPathByName("VoteProposal", values: new {id = proposal.ProposalId}))" role="button" class="fa-regular fa-thumbs-up vote @(proposal.Voters.Contains(User.Identity!.Name) ? "text-success" : "")"></i>
             <a asp-page="/Propose/Details" asp-route-proposalid="@proposal.ProposalId">
                 <i role="button" class="fa-regular fa-info-circle"></i>
@@ -74,9 +74,9 @@
                 url: $target.data('voteLink'),
                 method: "post",
             })
-            .done(_ => {
+            .done(data => {
                 $target.toggleClass('text-success');
-                //$li.find('.proposalVotes').text(1 + $li.data('voteCount'));
+                $li.find('.proposalVotes').text(data.votes);
             })
             .fail((_, status) => console.log(status));
         })
