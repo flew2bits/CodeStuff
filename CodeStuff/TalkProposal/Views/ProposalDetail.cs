@@ -1,3 +1,4 @@
+using CodeStuff.EntityShared.Events;
 using CodeStuff.TalkProposal.Events;
 using Marten.Events.Aggregation;
 
@@ -21,7 +22,7 @@ public class ProposalDetailProjection : SingleStreamAggregation<ProposalDetail>
                 comment.TimeStamp, proposalDetail.ProposalId)).ToArray()
         };
 
-    public ProposalDetail Apply(ReplyAddedToProposalComment reply, ProposalDetail proposalDetail) =>
+    public ProposalDetail Apply(ReplyAddedToComment reply, ProposalDetail proposalDetail) =>
         proposalDetail with
         {
             Comments = proposalDetail.Comments

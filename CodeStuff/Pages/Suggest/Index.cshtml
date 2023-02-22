@@ -1,0 +1,46 @@
+@page
+@model CodeStuff.Pages.Suggest.Index
+
+@{
+}
+<form method="post">
+    <div class="modal fade" id="addSuggestionModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Suggest a new Topic</h3>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label asp-for="NewSuggestion.Topic" class="form-label">Topic</label>
+                        <input class="form-control" type="text" asp-for="NewSuggestion.Topic" />
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="NewSuggestion.AdditionalDetails" class="form-label">
+                            Provide additional details about this topic that you'd like to know about. Include  
+                            any specific discussion that you think should be included.
+                        </label>
+                        <textarea class="form-control" asp-for="NewSuggestion.AdditionalDetails"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<h2>Topic Suggestions</h2>
+@if (Model.Suggestions.Any())
+{
+    <ul>
+    @foreach (var suggestion in Model.Suggestions)
+    {
+        <li>@suggestion.Topic (suggested by @suggestion.SuggestedBy)</li>
+    }
+</ul>
+}
+<button class="btn btn-primary" data-bs-target="#addSuggestionModal" data-bs-toggle="modal">Suggest a Topic</button>

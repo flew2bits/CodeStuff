@@ -1,3 +1,3 @@
 namespace CodeStuff.TalkSuggestion.Commands;
 
-public record SubmitSuggestion(string Topic, string AdditionalDetails);
+public record SubmitSuggestion(string Topic, string AdditionalDetails, string Name);

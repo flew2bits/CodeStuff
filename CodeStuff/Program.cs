@@ -2,6 +2,7 @@ global using JetBrains.Annotations;
 using CodeStuff.TalkProposal;
 using CodeStuff.TalkProposal.Commands;
 using CodeStuff.TalkProposal.Events;
+using CodeStuff.TalkSuggestion;
 using FluentValidation;
 using Marten;
 using Marten.Services.Json;
@@ -35,7 +36,9 @@ builder.Services.AddMarten(config =>
     config.UseDefaultSerialization(serializerType: SerializerType.SystemTextJson);
     config.AutoCreateSchemaObjects = AutoCreate.All;
 });
-builder.Services.AddProposals();
+builder.Services
+    .AddProposals()
+    .AddSuggestions();
 
 var app = builder.Build();
 app.UseStaticFiles();

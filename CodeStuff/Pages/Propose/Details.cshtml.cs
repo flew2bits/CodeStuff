@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using CodeStuff.EntityShared.Commands;
 using CodeStuff.TalkProposal;
 using CodeStuff.TalkProposal.Commands;
 using CodeStuff.TalkProposal.Views;
@@ -27,7 +28,7 @@ public class Details : PageModel
         [FromServices] ProposalCommandHandler commandHandler)
     {
         await commandHandler.HandleCommand(ProposalId, inReplyTo.HasValue
-            ? new ReplyToProposalComment(User.FindFirstValue(ClaimTypes.Upn)!, text, inReplyTo.Value)
+            ? new ReplyToComment(User.FindFirstValue(ClaimTypes.Upn)!, text, inReplyTo.Value)
             : new StartCommentThread(User.FindFirstValue(ClaimTypes.Upn)!, text));
         return RedirectToPage(new { ProposalId });
     }

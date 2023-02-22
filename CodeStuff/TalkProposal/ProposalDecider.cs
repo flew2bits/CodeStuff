@@ -1,3 +1,6 @@
+using CodeStuff.EntityShared;
+using CodeStuff.EntityShared.Commands;
+using CodeStuff.EntityShared.Events;
 using CodeStuff.TalkProposal.Commands;
 using CodeStuff.TalkProposal.Events;
 
@@ -17,8 +20,8 @@ public static class ProposalDecider
                 : Events(new VoteAdded(state.Id, toggle.UserName, DateTime.UtcNow)),
             StartCommentThread c => Events(new CommentThreadStarted(state.Id, Guid.NewGuid(), c.User, c.Text,
                 DateTime.UtcNow)),
-            ReplyToProposalComment r => state.Comments.Any(c => c.CommentId == r.InReplyTo)
-                ? Events(new ReplyAddedToProposalComment(state.Id, Guid.NewGuid(), r.User, r.Text, DateTime.UtcNow,
+            ReplyToComment r => state.Comments.Any(c => c.CommentId == r.InReplyTo)
+                ? Events(new ReplyAddedToComment(state.Id, Guid.NewGuid(), r.User, r.Text, DateTime.UtcNow,
                     r.InReplyTo))
                 : NoEvents,
             _ => NoEvents
@@ -39,16 +42,16 @@ public static class ProposalDecider
             },
             CommentThreadStarted c => state with
             {
-                Comments = state.Comments.Append(new ProposalComment(c.CommentId, c.User, c.Text, c.TimeStamp, state.Id)).ToArray()
+                Comments = state.Comments.Append(new EntityComment(c.CommentId, c.User, c.Text, c.TimeStamp, state.Id)).ToArray()
             },
-            ReplyAddedToProposalComment r => state with
+            ReplyAddedToComment r => state with
             {
-                Comments = state.Comments.Append(new ProposalComment(r.CommentId, r.User, r.Text, r.TimeStamp, r.InReplyTo)).ToArray()
+                Comments = state.Comments.Append(new EntityComment(r.CommentId, r.User, r.Text, r.TimeStamp, r.InReplyTo)).ToArray()
             },
             _ => state
         };
 
-    private static Proposal InitialState(Guid id) => new(id, "", "", "None", DateOnly.MinValue, Array.Empty<ProposalVote>(), Array.Empty<ProposalComment>());
+    private static Proposal InitialState(Guid id) => new(id, "", "", "None", DateOnly.MinValue, Array.Empty<ProposalVote>(), Array.Empty<EntityComment>());
 
     private static bool IsTerminal(Proposal _) => false;
 
