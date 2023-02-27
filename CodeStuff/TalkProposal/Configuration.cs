@@ -10,7 +10,7 @@ public static class Configuration
         services
             .AddScoped<ProposalCommandHandler>()
             .AddTransient<GetAll<ActiveProposal>>(svc => svc.GetRequiredService<ProposalData>().GetActiveProposals)
-            .AddTransient<Find<Guid, ProposalDetail>>(svc => svc.GetRequiredService<ProposalData>().GetDetail)
+            .AddTransient<Find<Guid, ProposalDetailWithComments>>(svc => svc.GetRequiredService<ProposalData>().GetDetail)
             .AddSingleton(ProposalDecider.Decider)
             .AddSingleton<Evolver<Guid, Proposal>>(ProposalDecider.Decider)
             .AddScoped<ProposalData>()

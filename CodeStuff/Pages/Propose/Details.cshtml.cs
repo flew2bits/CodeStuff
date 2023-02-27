@@ -14,9 +14,9 @@ public class Details : PageModel
 {
     [BindProperty(SupportsGet = true)] public Guid ProposalId { get; set; } = Guid.Empty;
 
-    public ProposalDetail Detail { get; set; } = null!;
+    public ProposalDetailWithComments Detail { get; set; } = null!;
 
-    public async Task<IActionResult> OnGet([FromServices] Find<Guid, ProposalDetail?> findProposalDetail)
+    public async Task<IActionResult> OnGet([FromServices] Find<Guid, ProposalDetailWithComments?> findProposalDetail)
     {
         var detail = await findProposalDetail(ProposalId);
         if (detail is null) return NotFound();

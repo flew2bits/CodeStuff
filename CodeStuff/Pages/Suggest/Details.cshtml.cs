@@ -17,9 +17,9 @@ public class Details : PageModel
         _commandHandler = commandHandler;
     }
 
-    public SuggestionDetail Detail { get; set; } = null!;
+    public SuggestionDetailWithComments Detail { get; set; } = null!;
 
-    public async Task<IActionResult> OnGet([FromServices] Find<Guid, SuggestionDetail?> findSuggestionDetail)
+    public async Task<IActionResult> OnGet([FromServices] Find<Guid, SuggestionDetailWithComments?> findSuggestionDetail)
     {
         var detail = await findSuggestionDetail(SuggestionId);
         if (detail is null) return NotFound();

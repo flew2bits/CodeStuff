@@ -1,4 +1,5 @@
 global using JetBrains.Annotations;
+using CodeStuff.EntityShared;
 using CodeStuff.TalkProposal;
 using CodeStuff.TalkProposal.Commands;
 using CodeStuff.TalkProposal.Events;
@@ -38,7 +39,8 @@ builder.Services.AddMarten(config =>
 });
 builder.Services
     .AddProposals()
-    .AddSuggestions();
+    .AddSuggestions()
+    .AddComments();
 
 var app = builder.Build();
 app.UseStaticFiles();

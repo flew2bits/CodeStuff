@@ -3,23 +3,25 @@
 @model CodeStuff.Pages.Suggest.Details
 
 @{
+    var detail = Model.Detail.Detail;
+    var comments = Model.Detail.Comments;
 }
 
 <partial name="Shared/AddCommentModal" />
 
 <div class="d-flex">
-    <h2>Details for @Model.Detail.Topic</h2>
+    <h2>Details for @detail.Topic</h2>
     <a class="ms-auto h2" asp-page="./Index"><i class="fa-regular fa-arrow-turn-down-left" title="Return to Suggestions"></i></a>
 </div>
-<div class="mb-2">@(string.IsNullOrWhiteSpace(Model.Detail.AdditionalDetails)?"No additional details":Model.Detail.AdditionalDetails)</div>
-<div class="mb-2">Suggested by @Model.Detail.SuggestedBy</div>
+<div class="mb-2">@(string.IsNullOrWhiteSpace(detail.AdditionalDetails)?"No additional details":detail.AdditionalDetails)</div>
+<div class="mb-2">Suggested by @detail.SuggestedBy</div>
 
 <div class="mt-2">
     <h4>Comments</h4>
-    @if (Model.Detail.Comments.Any())
+    @if (comments.Any())
     {
         <div class="ms-n4 mb-3">
-            <partial name="_CommentLayer" model="@((Model.Detail.SuggestionId, Model.Detail.Comments.ToLookup(c => c.InReplyTo)))"/>
+            <partial name="_CommentLayer" model="@((detail.SuggestionId, comments.ToLookup(c => c.InReplyTo)))"/>
         </div>
         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCommentModal">Start a Thread</button>
     }
@@ -32,5 +34,5 @@
 
 @section scripts
 {
-    <script src="scripts/shared/addComment.js"></script>
+    <script src="~/scripts/shared/addComment.js"></script>
 }

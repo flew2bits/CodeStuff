@@ -43,7 +43,9 @@
     <ul>
     @foreach (var suggestion in Model.Suggestions)
     {
-        <li>@suggestion.Topic (suggested by @suggestion.SuggestedBy)</li>
+        <li>@suggestion.Topic (suggested by @suggestion.SuggestedBy)
+            <a asp-page="./Details" asp-route-suggestionId="@suggestion.SuggestionId"><i class="fa-regular fa-info-circle"></i></a>
+            </li>
     }
 </ul>
 }

@@ -1,3 +1,4 @@
+using CodeStuff.EntityShared.Views;
 using CodeStuff.Infrastructure;
 using CodeStuff.TalkProposal.Views;
 using Marten;
@@ -17,9 +18,14 @@ public class ProposalData: MartenData<Proposal>
         return await session.Query<ActiveProposal>().ToListAsync();
     }
 
-    public async Task<ProposalDetail?> GetDetail(Guid id)
+    public async Task<ProposalDetailWithComments?> GetDetail(Guid id)
     {
         await using var session = Store.QuerySession();
-        return await session.Query<ProposalDetail>().SingleOrDefaultAsync(p => p.ProposalId == id);
+        var detail = await session.Query<ProposalDetail>().SingleOrDefaultAsync(p => p.ProposalId == id);
+
+        if (detail is null) return null;
+
+        var comments = await session.Query<Comment>().Where(c => c.EntityId == id).ToListAsync();
+        return new ProposalDetailWithComments(detail, comments.ToArray());
     }
 }

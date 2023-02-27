@@ -2,23 +2,25 @@
 @model CodeStuff.Pages.Propose.Details
 
 @{
+    var detail = Model.Detail.Detail;
+    var comments = Model.Detail.Comments;
 }
 
 <partial name="Shared/AddCommentModal" />
 
 <div class="d-flex">
-    <h2>Details for @Model.Detail!.Title</h2>
+    <h2>Details for @detail.Title</h2>
     <a class="ms-auto h2" asp-page="./Index"><i class="fa-regular fa-arrow-turn-down-left" title="Return to Proposals"></i></a>
 </div>
-<div class="mb-2">@Model.Detail.Brief</div>
-<div class="mb-2">Presented by @Model.Detail.Presenter</div>
-<div class="mb-2">Not before @Model.Detail.ReadyDate.ToShortDateString()</div>
+<div class="mb-2">@detail.Brief</div>
+<div class="mb-2">Presented by @detail.Presenter</div>
+<div class="mb-2">Not before @detail.ReadyDate.ToShortDateString()</div>
 <div class="mt-2">
     <h4>Comments</h4>
-    @if (Model.Detail.Comments.Any())
+    @if (comments.Any())
     {
         <div class="ms-n4 mb-3">
-            <partial name="_CommentLayer" model="@((Model.Detail.ProposalId, Model.Detail.Comments.ToLookup(c => c.InReplyTo)))"/>
+            <partial name="_CommentLayer" model="@((detail.ProposalId, comments.ToLookup(c => c.InReplyTo)))"/>
         </div>
         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCommentModal">Start a Thread</button>
     }
@@ -31,5 +33,5 @@
 
 @section scripts
 {
-    <script src="scripts/shared/addComment.js"></script>
+    <script src="~/scripts/shared/addComment.js"></script>
 }

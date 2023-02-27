@@ -1,3 +1,3 @@
 namespace CodeStuff.EntityShared.Commands;
 
-public record ReplyToComment(string Text, string User, Guid InReplyTo);
+public record ReplyToComment(string User, string Text, Guid InReplyTo);
