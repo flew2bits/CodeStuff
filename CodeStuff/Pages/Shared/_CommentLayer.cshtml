@@ -1,5 +1,5 @@
 @using Humanizer
-@model ValueTuple<Guid, ILookup<Guid, CodeStuff.TalkProposal.Views.Comment>>
+@model ValueTuple<Guid, ILookup<Guid, CodeStuff.EntityShared.Views.Comment>>
 
 @{
     var comments = Model.Item2[Model.Item1].ToArray();

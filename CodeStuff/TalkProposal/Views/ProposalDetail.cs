@@ -1,4 +1,5 @@
 using CodeStuff.EntityShared.Events;
+using CodeStuff.EntityShared.Views;
 using CodeStuff.TalkProposal.Events;
 using Marten.Events.Aggregation;
 
@@ -7,7 +8,6 @@ namespace CodeStuff.TalkProposal.Views;
 public record ProposalDetail(Guid ProposalId, string Title, string Brief, string Presenter, DateOnly ReadyDate,
     Comment[] Comments);
 
-public record Comment(Guid CommentId, string User, string Text, DateTime TimeStamp, Guid InReplyTo);
 
 [UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class ProposalDetailProjection : SingleStreamAggregation<ProposalDetail>
