@@ -11,13 +11,13 @@ public static class PresentationDecider
     private static IEnumerable<object> Decide(Presentation state, object command) =>
         command switch
         {
-            SchedulePresentation => Events(new PresentationScheduled()),
+            SchedulePresentation sp => Events(new PresentationScheduled(state.PresentationId, sp.Title, sp.Presenter, sp.ScheduledTime, sp.Duration)),
             _ => NoEvents
         };
     
     private static Presentation Evolve(Presentation state, object @event) => state;
 
-    private static Presentation InitialState(Guid id) => new();
+    private static Presentation InitialState(Guid id) => new(id);
 
     private static bool IsCreator(object command) => command is SchedulePresentation;
 

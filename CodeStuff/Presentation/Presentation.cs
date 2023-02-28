@@ -1,3 +1,3 @@
 namespace CodeStuff.Presentation;
 
-public record Presentation();
+public record Presentation(Guid PresentationId);
