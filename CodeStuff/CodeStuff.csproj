@@ -19,11 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Presentation\Commands" />
-      <Folder Include="Presentation\Events" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.5.0" />
       <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.0" />
